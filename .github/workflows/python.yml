@@ -1,0 +1,52 @@
+name: Star
+
+on:
+
+  push:
+    branches:
+      - master
+      
+  schedule:
+  - cron: "* * * * *"
+
+jobs:
+  auto_commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+         persist-credentials: false
+         fetch-depth: 0
+
+      - name: Modify last update
+        run: |
+          d='DATE '`date '+%Y-%m-%d %H:%M:%S'`
+          echo $d > MUCK
+          
+      - name: Commit changes
+        run: | 
+          git config --local user.email "ischhfd83@rambler.ru"
+          git config --local user.name "${{ github.repository_owner }}"
+          git add -A
+          
+          arr[0]="Muck Stealer 🚀"
+          arr[1]="Muck Stealer 🚀"
+          arr[2]="Muck Stealer 🚀"
+          arr[3]="Muck Stealer 🚀"
+          arr[4]="Muck Stealer 🚀"
+          arr[5]="Muck Stealer 🚀"
+          arr[6]="Muck Stealer 🚀"
+          arr[7]="Muck Stealer 🚀"
+          arr[8]="Muck Stealer 🚀"
+          arr[9]="Muck Stealer 🚀"
+          
+          rand=$[$RANDOM % ${#arr[@]}]
+          
+          git commit -m "${arr[$rand]}"
+          
+      - name: GitHub Push
+        uses: ad-m/github-push-action@master
+        with:
+          force: true
+          directory: "."
+          github_token: ${{ secrets.GITHUB_TOKEN }}
